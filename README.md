@@ -1,1 +1,2 @@
-# network-ala
+# From microarray results to network
+
