@@ -33,7 +33,7 @@ ncbi-taxonomist resolve -t `cat xuniqtaxids2` -r -e MAIL-ADDRESS > xidstax
 
 # Daje to dużo danych, wydobycie roślin zielonych
 grep -i 'Viridiplantae' xidstax > xviridiplantae
-
+ 
 cut -f2 -d"," xviridiplantae | sort -u | wc -l
 68 gatunków
 
