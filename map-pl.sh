@@ -279,6 +279,13 @@ vcffilter -f "QUAL > 20" pl-NAM.vcf > pl-NAM20.vcf
 # trwało ok 3 h
 # Potrzebny program do analizy jakościowej vcf
 ~/bin/bcftools-1.17/bcftools stats pl-NAM20.vcf > stats20
+# Powinienem użyć opcji:
+# -F, --fasta-ref ref.fa
+#    faidx indexed reference sequence file to determine INDEL context
+# samtools faidx ...
+# Nie pokazuje statystyk osobno dla prób (?)
+# Trzeba dać bcftools stats -s - <multisample VCF file>
+
 # wykres, wymaga LaTeXa i klasy memoir.cls
 # najlepiej zainstalować je z TeXLive, w razie czego trzeba zrobić source ~/.profile w tym samym terminalu w którym plot
 ~/bin/bcftools-1.17/misc/plot-vcfstats -p plot -s stats20
