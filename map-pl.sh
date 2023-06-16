@@ -276,3 +276,9 @@ ulimit -n 20000 # bez tego wykrzacza się
 # podstawowe filtrowanie (p<0.01)
 # poziom varcall-parallel
 vcffilter -f "QUAL > 20" pl-NAM.vcf > pl-NAM20.vcf
+# trwało ok 3 h
+# Potrzebny program do analizy jakościowej vcf
+~/bin/bcftools-1.17/bcftools stats pl-NAM20.vcf > stats20
+# wykres, wymaga LaTeXa i klasy memoir.cls
+# najlepiej zainstalować je z TeXLive, w razie czego trzeba zrobić source ~/.profile w tym samym terminalu w którym plot
+~/bin/bcftools-1.17/misc/plot-vcfstats -p plot -s stats20
