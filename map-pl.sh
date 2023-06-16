@@ -269,3 +269,10 @@ ulimit -n 20000 # bez tego wykrzacza się
     srt-afex5-dedup.bam srt-afex6-dedup.bam srt-afex9-dedup.bam srt-hds1-dedup.bam srt-hds2-dedup.bam srt-hds3-dedup.bam \ 
     > /media/mj/17d60f37-45c8-4878-8d94-7e95ff7bbddb/map-pl/varcall-parallel/pl-NAM.vcf 2>/media/mj/17d60f37-45c8-4878-8d94-7e95ff7bbddb/map-pl/varcall-parallel/info
 #**********************************************************************
+# Przekieroanie strumienia błędu do pliku pozwala wyłączyć komp po zakończeniu procedury z zachowaniem ifo o ewenualnych problemach.
+# Zamiast wypisywać pliki bam można było podać ich listę: -L --bam-list FILE
+# Trwało to ok 16 h
+
+# podstawowe filtrowanie (p<0.01)
+# poziom varcall-parallel
+vcffilter -f "QUAL > 20" pl-NAM.vcf > pl-NAM20.vcf
