@@ -285,6 +285,7 @@ vcffilter -f "QUAL > 20" pl-NAM.vcf > pl-NAM20.vcf
 # samtools faidx ...
 # Nie pokazuje statystyk osobno dla prób (?)
 # Trzeba dać bcftools stats -s - <multisample VCF file>
+# ALbo bcftools stats -S sample-list.txt file.vcf > stats
 
 # wykres, wymaga LaTeXa i klasy memoir.cls
 # najlepiej zainstalować je z TeXLive, w razie czego trzeba zrobić source ~/.profile w tym samym terminalu w którym plot
