@@ -290,3 +290,14 @@ vcffilter -f "QUAL > 20" pl-NAM.vcf > pl-NAM20.vcf
 # wykres, wymaga LaTeXa i klasy memoir.cls
 # najlepiej zainstalować je z TeXLive, w razie czego trzeba zrobić source ~/.profile w tym samym terminalu w którym plot
 ~/bin/bcftools-1.17/misc/plot-vcfstats -p plot -s stats20
+
+
+# Dalej snpEff
+# instalacja z repo ubuntu albo ściągnąć z github i wystarczy rozpakować
+# https://pcingola.github.io/SnpEff/se_commandline/
+ # Ważna opcja -noShiftHgvs 
+# https://hbctraining.github.io/In-depth-NGS-Data-Analysis-Course/sessionVI/lessons/03_annotation-snpeff.html
+# https://genomics.sschmeier.com/ngs-voi/index.html
+# opis HGVS http://varnomen.hgvs.org/bg-material/simple/
+# Sequence Ontology http://www.sequenceontology.org/
+ 
