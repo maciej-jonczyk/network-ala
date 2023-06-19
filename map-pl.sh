@@ -335,6 +335,14 @@ mkdir ../genomes
 cd ../genomes
 cp -a /media/mj/c8e2ccd2-6313-4092-be34-46144891720f/NAMv5/Zm-B73-REFERENCE-NAM-5.0.fa .
 mv Zm-B73-REFERENCE-NAM-5.0.fa NAMv5.fa
+
+# Regulation database
+# poziom ~/bin/snpEff/data/NAMv5
+cp /media/mj/c8e2ccd2-6313-4092-be34-46144891720f/NAMv5/Zm-B73-REFERENCE-NAM-5.0_Zm00001eb.1.nc.gff3.gz regulation.gff.gz
+
 # Tworzenie bazy
 cd ../..
 java -jar snpEff.jar build -gtf22 -v NAMv5
+
+# Jeśli regulacyjne / non-coding dodane później
+java -Xmx20G -jar snpEff.jar build -v -onlyReg NAMv5
