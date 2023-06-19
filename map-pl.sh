@@ -280,6 +280,7 @@ vcffilter -f "QUAL > 20" pl-NAM.vcf > pl-NAM20.vcf
 # Po bcftools stats jeszcze filtr na depth > 5 bo wykres "depth distribution" miał dołek
 # Żeby było szybciej używam już odfiltrowanego zbioru
 vcffilter -f "DP > 5" pl-NAM20.vcf > pl-NAM20dp5.vcf
+# trwało ok 2 h
 
 # Potrzebny program do analizy jakościowej vcf
 # -F, --fasta-ref ref.fa
@@ -287,19 +288,53 @@ vcffilter -f "DP > 5" pl-NAM20.vcf > pl-NAM20dp5.vcf
 # samtools faidx ... -> już zrobiony
 # Statystyki osobno dla prób -> Trzeba dać bcftools stats -s - <multisample VCF file>
 # ALbo bcftools stats -S sample-list.txt file.vcf > stats
-~/bin/bcftools-1.17/bcftools stats -s - pl-NAM20.vcf -F /media/mj/c8e2ccd2-6313-4092-be34-46144891720f/NAMv5/Zm-B73-REFERENCE-NAM-5.0.fa > stats20
+~/bin/bcftools-1.17/bcftools stats -s - pl-NAM20dp5.vcf -F /media/mj/c8e2ccd2-6313-4092-be34-46144891720f/NAMv5/Zm-B73-REFERENCE-NAM-5.0.fa > stats20dp5
 
 # wykres, wymaga LaTeXa i klasy memoir.cls
 # najlepiej zainstalować je z TeXLive, w razie czego trzeba zrobić source ~/.profile w tym samym terminalu w którym plot
-~/bin/bcftools-1.17/misc/plot-vcfstats -p plot -s stats20
-
+~/bin/bcftools-1.17/misc/plot-vcfstats -p plot -s stats20dp5
+# Nic to nie zminiło w wykresie "depth distribution"
 
 # Dalej snpEff
-# instalacja z repo ubuntu albo ściągnąć z github i wystarczy rozpakować
+# instalacja z repo ubuntu albo ściągnąć z github i wystarczy rozpakować (robię z github)
 # https://pcingola.github.io/SnpEff/se_commandline/
  # Ważna opcja -noShiftHgvs 
 # https://hbctraining.github.io/In-depth-NGS-Data-Analysis-Course/sessionVI/lessons/03_annotation-snpeff.html
 # https://genomics.sschmeier.com/ngs-voi/index.html
 # opis HGVS http://varnomen.hgvs.org/bg-material/simple/
 # Sequence Ontology http://www.sequenceontology.org/
- 
+
+# Dla pewności tworzę swoją bazę żeby była spójna z plikami, których używam
+# Wg https://pcingola.github.io/SnpEff/se_build_db/#add-a-genome-to-the-configuration-file
+# poziom ~/bin/snpEff
+featherpad snpEff.config &
+#************* dodaję wpis nowego genomu ***********
+# Zea mays, NAMv5
+NAMv5.genome : Maize
+#*****************************************************
+# katalog na genom
+mkdir -p data/NAMv5
+cd data/NAMv5
+# skopiowanie plików
+cp -a /media/mj/c8e2ccd2-6313-4092-be34-46144891720f/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf .
+# zmiana nazwy wg dokumentacji
+mv Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf genes.gtf
+# snpEff obsługuje kompresję więc ją robię
+gzip genes.gtf
+gzip NAMv5.fa
+# CDS do sprawdzenia poprawności bazy
+cp /media/mj/c8e2ccd2-6313-4092-be34-46144891720f/NAMv5/Zm-B73-REFERENCE-NAM-5.0_Zm00001eb.1.cds.fa.gz .
+# zmiana nazwy wg instrukcji
+mv Zm-B73-REFERENCE-NAM-5.0_Zm00001eb.1.cds.fa.gz cds.fa.gz
+# pobranie białek, też do kontroli
+wget -nd -np https://download.maizegdb.org/Zm-B73-REFERENCE-NAM-5.0/Zm-B73-REFERENCE-NAM-5.0_Zm00001eb.1.protein.fa.gz -O protein.fa.gz
+# Koniecznie trzeba zmienić IDs w pliku proteins inczej ich nie znajduje i protein check daje error
+cp protein.fa.gz beckup-protein.fa.gz
+zcat beckup-protein.fa.gz | sed 's/_P/_T/' | gzip > protein.fa.gz
+mkdir ../genomes
+cd ../genomes
+cp -a /media/mj/c8e2ccd2-6313-4092-be34-46144891720f/NAMv5/Zm-B73-REFERENCE-NAM-5.0.fa .
+mv Zm-B73-REFERENCE-NAM-5.0.fa NAMv5.fa
+# Tworzenie bazy
+cd ../..
+java -jar snpEff.jar build -gtf22 -v NAMv5
