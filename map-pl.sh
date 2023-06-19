@@ -298,7 +298,6 @@ vcffilter -f "DP > 5" pl-NAM20.vcf > pl-NAM20dp5.vcf
 # Dalej snpEff
 # instalacja z repo ubuntu albo ściągnąć z github i wystarczy rozpakować (robię z github)
 # https://pcingola.github.io/SnpEff/se_commandline/
- # Ważna opcja -noShiftHgvs 
 # https://hbctraining.github.io/In-depth-NGS-Data-Analysis-Course/sessionVI/lessons/03_annotation-snpeff.html
 # https://genomics.sschmeier.com/ngs-voi/index.html
 # opis HGVS http://varnomen.hgvs.org/bg-material/simple/
@@ -346,3 +345,14 @@ java -jar snpEff.jar build -gtf22 -v NAMv5
 
 # Jeśli regulacyjne / non-coding dodane później
 java -Xmx20G -jar snpEff.jar build -v -onlyReg NAMv5
+
+# Anotacja
+
+java -jar snpEff.jar ann
+-csvStats <file>                : Create CSV summary file.
+-s , -stats, -htmlStats         : Create HTML summary file.  Default is 'snpEff_summary.html
+  -lof                            : Add loss of function (LOF) and Nonsense mediated decay (NMD) tags.
+  -c , -config                 : Specify config file
+  -v , -verbose                : Verbose mode
+
+Java -Xmx60G -jar ~/bin/snpEff/snpEff.jar ann -csvStats stat.csv -s -lof -c ~/bin/snpEff/snpEff.config NAMv5 -v pl-NAM20dp5.vcf > pl-anno.vcf 2>bledy && shutdown -h +10
