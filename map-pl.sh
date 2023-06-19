@@ -277,15 +277,17 @@ ulimit -n 20000 # bez tego wykrzacza się
 # poziom varcall-parallel
 vcffilter -f "QUAL > 20" pl-NAM.vcf > pl-NAM20.vcf
 # trwało ok 3 h
+# Po bcftools stats jeszcze filtr na depth > 5 bo wykres "depth distribution" miał dołek
+# Żeby było szybciej używam już odfiltrowanego zbioru
+vcffilter -f "DP > 5" pl-NAM20.vcf > pl-NAM20dp5.vcf
+
 # Potrzebny program do analizy jakościowej vcf
-~/bin/bcftools-1.17/bcftools stats pl-NAM20.vcf > stats20
-# Powinienem użyć opcji:
 # -F, --fasta-ref ref.fa
 #    faidx indexed reference sequence file to determine INDEL context
-# samtools faidx ...
-# Nie pokazuje statystyk osobno dla prób (?)
-# Trzeba dać bcftools stats -s - <multisample VCF file>
+# samtools faidx ... -> już zrobiony
+# Statystyki osobno dla prób -> Trzeba dać bcftools stats -s - <multisample VCF file>
 # ALbo bcftools stats -S sample-list.txt file.vcf > stats
+~/bin/bcftools-1.17/bcftools stats -s - pl-NAM20.vcf -F /media/mj/c8e2ccd2-6313-4092-be34-46144891720f/NAMv5/Zm-B73-REFERENCE-NAM-5.0.fa > stats20
 
 # wykres, wymaga LaTeXa i klasy memoir.cls
 # najlepiej zainstalować je z TeXLive, w razie czego trzeba zrobić source ~/.profile w tym samym terminalu w którym plot
