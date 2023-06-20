@@ -403,6 +403,6 @@ tar -xzf zea_mays_vep_56_Zm-B73-REFERENCE-NAM-5.0.tar.gz
 # trzeba wskazać wersję cache zgodną ze ściągniętym plikiem
 # opcja -e daje max informacji
 # -fork daje multithreading
-~/bin/ensembl-vep-release-109/vep -i ../varcall-parallel/pl-NAM20dp5.vcf -o pl-vep.vcf -v -species zea_mays -format vcf --sf stats-vep.html -e \ 
--offline -cache -dir /home/mj/.vep/ -cache_version 56 -fork 24 -fasta /media/mj/c8e2ccd2-6313-4092-be34-46144891720f/NAMv5/Zm-B73-REFERENCE-NAM-5.0.fa \ 
--force_overwrite 2>bledy-vep && shutdown -h +10
+# dwie wersje analizy z gtf i bez niego, nie wiem co on daje
+~/bin/ensembl-vep-release-109/vep -i ../varcall-parallel/pl-NAM20dp5.vcf -o pl-vep-gtf.vcf -v -species zea_mays -format vcf --sf stats-vep-gtf.html -e -offline -cache -dir /home/mj/.vep/ -cache_version 56 -fork 24 -fasta /media/mj/c8e2ccd2-6313-4092-be34-46144891720f/NAMv5/Zm-B73-REFERENCE-NAM-5.0.fa -gtf /media/mj/c8e2ccd2-6313-4092-be34-46144891720f/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.sorted.gtf.gz -force_overwrite 2>bledy-vep-gtf
+~/bin/ensembl-vep-release-109/vep -i ../varcall-parallel/pl-NAM20dp5.vcf -o pl-vep.vcf -v -species zea_mays -format vcf --sf stats-vep.html -e -offline -cache -dir /home/mj/.vep/ -cache_version 56 -fork 24 -fasta /media/mj/c8e2ccd2-6313-4092-be34-46144891720f/NAMv5/Zm-B73-REFERENCE-NAM-5.0.fa -force_overwrite 2>bledy-vep
