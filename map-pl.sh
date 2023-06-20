@@ -370,3 +370,6 @@ Java -Xmx60G -jar ~/bin/snpEff/snpEff.jar ann -csvStats stat.csv -s stats.html -
 # Sporo błędów -> robię procedure z wbudowanym genomem v5.1
 # "Genome stats" identyczne jak dla genomu ktory sam zrobilem
 java -Xmx60G -jar ~/bin/snpEff/snpEff.jar ann -csvStats stat-def.csv -s stat-def.html -c ~/bin/snpEff/snpEff.config Zea_mays -v pl-NAM20dp5.vcf > pl-anno-def.vcf 2>bledy-def
+
+# Dokładnie te same wyniki, przynajmniej wiem, że dobrze zrobiłem genom
+# Mały problem? -> https://www.biostars.org/p/9551178/#9551187
