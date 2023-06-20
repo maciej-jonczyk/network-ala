@@ -303,6 +303,9 @@ vcffilter -f "DP > 5" pl-NAM20.vcf > pl-NAM20dp5.vcf
 # opis HGVS http://varnomen.hgvs.org/bg-material/simple/
 # Sequence Ontology http://www.sequenceontology.org/
 
+# Sprawdzenie dostępnych genomów dla Zea
+java -jar ~/bin/snpEff/snpEff.jar databases | grep 'Zea'
+
 # Dla pewności tworzę swoją bazę żeby była spójna z plikami, których używam
 # Wg https://pcingola.github.io/SnpEff/se_build_db/#add-a-genome-to-the-configuration-file
 # poziom ~/bin/snpEff
@@ -350,9 +353,20 @@ java -Xmx20G -jar snpEff.jar build -v -onlyReg NAMv5
 
 java -jar snpEff.jar ann
 -csvStats <file>                : Create CSV summary file.
--s , -stats, -htmlStats         : Create HTML summary file.  Default is 'snpEff_summary.html
+-s , -stats, -htmlStats         : Create HTML summary file.  Default is 'snpEff_summary.html'
   -lof                            : Add loss of function (LOF) and Nonsense mediated decay (NMD) tags.
   -c , -config                 : Specify config file
   -v , -verbose                : Verbose mode
 
 Java -Xmx60G -jar ~/bin/snpEff/snpEff.jar ann -csvStats stat.csv -s -lof -c ~/bin/snpEff/snpEff.config NAMv5 -v pl-NAM20dp5.vcf > pl-anno.vcf 2>bledy && shutdown -h +10
+# Zajęło niecałą 1 h
+
+# W ten sposób (-s -lof) statystki w html zapiosane zostały do pliku -lof a statystyki dla genów w -lof.genes.txt
+# po -s trzeba podać nazwę np. stats.html
+# -lof i tak jest domyślnie stosowane
+# Niżej poprawna komenda
+Java -Xmx60G -jar ~/bin/snpEff/snpEff.jar ann -csvStats stat.csv -s stats.html -c ~/bin/snpEff/snpEff.config NAMv5 -v pl-NAM20dp5.vcf > pl-anno.vcf 2>bledy && shutdown -h +10
+
+# Sporo błędów -> robię procedure z wbudowanym genomem v5.1
+# "Genome stats" identyczne jak dla genomu ktory sam zrobilem
+java -Xmx60G -jar ~/bin/snpEff/snpEff.jar ann -csvStats stat-def.csv -s stat-def.html -c ~/bin/snpEff/snpEff.config Zea_mays -v pl-NAM20dp5.vcf > pl-anno-def.vcf 2>bledy-def
