@@ -372,4 +372,37 @@ Java -Xmx60G -jar ~/bin/snpEff/snpEff.jar ann -csvStats stat.csv -s stats.html -
 java -Xmx60G -jar ~/bin/snpEff/snpEff.jar ann -csvStats stat-def.csv -s stat-def.html -c ~/bin/snpEff/snpEff.config Zea_mays -v pl-NAM20dp5.vcf > pl-anno-def.vcf 2>bledy-def
 
 # Dokładnie te same wyniki, przynajmniej wiem, że dobrze zrobiłem genom
-# Mały problem? -> https://www.biostars.org/p/9551178/#9551187
+# To mmały problem? -> https://www.biostars.org/p/9551178/#9551187
+
+#******************************************************** VEP ***************************************************************
+# Próba z Variant Effect Predictor z Ensembl
+# Pobranie z https://grch37.ensembl.org/info/docs/tools/vep/index.html
+# Dokumentacja https://grch37.ensembl.org/info/docs/tools/vep/script/index.html
+# Instalacja modułów Perla wg README
+cpan # i dalej
+install perl::module
+
+# Aby DBD::mysql zainstalować
+sudo apt-get install libmysqlclient-dev
+#i w cpan
+install DBD::mysql
+install Bio::Root::Version # to też potrzebne
+# Treba skompresować bgzip i zindeksować gtf, musi być wcześniej posortowany
+# poziom /media/mj/c8e2ccd2-6313-4092-be34-46144891720f/NAMv5
+/home/mj/bin/ensembl-vep-release-109/htslib/bgzip Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.sorted.gtf -c > Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.sorted.gtf.gz
+~/bin/bcftools-1.17/bcftools tabix -p gff Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.sorted.gtf.gz
+#**************************************************************************************************************************
+
+#**************** VEP z pobranym genomem **********************************************************************************
+# wg https://grch37.ensembl.org/info/docs/tools/vep/script/vep_cache.html#cache
+cd ~/.vep/
+# pobranie z http://ftp.ensemblgenomes.org/pub/current/plants/variation/indexed_vep_cache/
+wget -np -nd http://ftp.ensemblgenomes.org/pub/current/plants/variation/indexed_vep_cache/zea_mays_vep_56_Zm-B73-REFERENCE-NAM-5.0.tar.gz
+tar -xzf zea_mays_vep_56_Zm-B73-REFERENCE-NAM-5.0.tar.gz
+
+# trzeba wskazać wersję cache zgodną ze ściągniętym plikiem
+# opcja -e daje max informacji
+# -fork daje multithreading
+~/bin/ensembl-vep-release-109/vep -i ../varcall-parallel/pl-NAM20dp5.vcf -o pl-vep.vcf -v -species zea_mays -format vcf --sf stats-vep.html -e \ 
+-offline -cache -dir /home/mj/.vep/ -cache_version 56 -fork 24 -fasta /media/mj/c8e2ccd2-6313-4092-be34-46144891720f/NAMv5/Zm-B73-REFERENCE-NAM-5.0.fa \ 
+-force_overwrite 2>bledy-vep && shutdown -h +10
