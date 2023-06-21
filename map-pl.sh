@@ -394,7 +394,7 @@ install Bio::Root::Version # to też potrzebne
 #**************************************************************************************************************************
 
 #**************** VEP z pobranym genomem **********************************************************************************
-# wg https://grch37.ensembl.org/info/docs/tools/vep/script/vep_cache.html#cache
+# wg https://plants.ensembl.org/info/docs/tools/vep/script/vep_options.html#basic
 cd ~/.vep/
 # pobranie z http://ftp.ensemblgenomes.org/pub/current/plants/variation/indexed_vep_cache/
 wget -np -nd http://ftp.ensemblgenomes.org/pub/current/plants/variation/indexed_vep_cache/zea_mays_vep_56_Zm-B73-REFERENCE-NAM-5.0.tar.gz
@@ -406,3 +406,18 @@ tar -xzf zea_mays_vep_56_Zm-B73-REFERENCE-NAM-5.0.tar.gz
 # dwie wersje analizy z gtf i bez niego, nie wiem co on daje
 ~/bin/ensembl-vep-release-109/vep -i ../varcall-parallel/pl-NAM20dp5.vcf -o pl-vep-gtf.vcf -v -species zea_mays -format vcf --sf stats-vep-gtf.html -e -offline -cache -dir /home/mj/.vep/ -cache_version 56 -fork 24 -fasta /media/mj/c8e2ccd2-6313-4092-be34-46144891720f/NAMv5/Zm-B73-REFERENCE-NAM-5.0.fa -gtf /media/mj/c8e2ccd2-6313-4092-be34-46144891720f/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.sorted.gtf.gz -force_overwrite 2>bledy-vep-gtf
 ~/bin/ensembl-vep-release-109/vep -i ../varcall-parallel/pl-NAM20dp5.vcf -o pl-vep.vcf -v -species zea_mays -format vcf --sf stats-vep.html -e -offline -cache -dir /home/mj/.vep/ -cache_version 56 -fork 24 -fasta /media/mj/c8e2ccd2-6313-4092-be34-46144891720f/NAMv5/Zm-B73-REFERENCE-NAM-5.0.fa -force_overwrite 2>bledy-vep
+
+
+~/bin/ensembl-vep-release-109/vep -i ../varcall-parallel/pl-NAM20dp5.vcf -vcf -vcf_info_field ANN -o pl-vep-gtf.vcf -individual all -v -species zea_mays -format vcf --sf stats-vep-gtf.html -e -offline -cache -dir /home/mj/.vep/ -cache_version 56 -fork 24 -buffer_size 10000 -hgvs -check_existing -check_ref -fasta /media/mj/c8e2ccd2-6313-4092-be34-46144891720f/NAMv5/Zm-B73-REFERENCE-NAM-5.0.fa -gtf /media/mj/c8e2ccd2-6313-4092-be34-46144891720f/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.sorted.gtf.gz -force_overwrite
+~/bin/ensembl-vep-release-109/vep -i ../varcall-parallel/pl-NAM20dp5.vcf -vcf -vcf_info_field ANN -o pl-vep.vcf -individual all -v -species zea_mays -format vcf --sf stats-vep.html -e -offline -cache -dir /home/mj/.vep/ -cache_version 56 -fork 24 -buffer_size 10000 -hgvs -check_existing -check_ref -fasta /media/mj/c8e2ccd2-6313-4092-be34-46144891720f/NAMv5/Zm-B73-REFERENCE-NAM-5.0.fa -force_overwrite
+
+shutdown -h +10
+
+
+# dodać -hgvs, wymaga -fasta
+# -check_ref (sprawdzenie alleli względem sekwencj fasta, wymaga -fasta)
+# -buffer_size, domyślny 5000, mozna zwiększyć aby było szybciej
+# -vcf, output file format
+# -individual all
+# -vcf_info_field ANN, format onsequences jak w snpEff, dla porównania
+# -check_existing
