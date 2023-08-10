@@ -4,4 +4,4 @@ The aim of this repo is create protein interaction network for gene expression d
 The starting point is a mapping between oligo probes (abbreviated MZ) to maize genes (NAM v5 assembly, dubbed NAM).
 The code for MZ-NAM mapping is not included here.
 
-Awaiting update of IDs in STRING v 12
+The primary ID type in STRING v 12 is UniProt. Mapping to AGPv4 is included so I've to map it to NAM.
