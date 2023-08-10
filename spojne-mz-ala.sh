@@ -1,6 +1,9 @@
-# Sieć wg string 11.5
+# Sieć wg STRING 12
 # sieć wg ortologów wymuszałaby zbyt dużo arbitralnych wyborów.
-# Poza tym string integruje wiele baz i pozwala sprawdzić 
+# Poza tym string integruje wiele baz i pozwala sprawdzić
+
+# Pierwszy krok to przekodowanie MZ - ekspresja na NAM - ekspresja.
+# Odfiltrowanie NAM z MZ z niespójną ekspresją i uśrednienie tych ze spójną
 
 #***************** ids4sed ***********************
 # poziom /media/mj/ANTIX-LIVE/map_probes/bbest_cdna
@@ -111,6 +114,4 @@ cat x68_niesp_id x68idsusr > x
 grep -Fvwf x x68all > x68unikalne
 cat x68unikalne sr68 | sort -k1,1 > ok68
 
-# Sieć string wciąż bazuje na v3, trzeba wyciągnąć przyporządkowania NAM - v3
-# Lista wszyskich istotnych IDs
-cat ok[0-9][0-9] | cut -f1 -d" " | sort -u > ok_alluniq_ids
+# Końcowy wynik - lista unikalnych NAM z ekspresją
