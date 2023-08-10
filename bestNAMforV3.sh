@@ -8,7 +8,7 @@
 cut -f1 -d" " gene_translate_all35 | sort | uniq -d > NAM-mulitihit_v3
 # transkrypty NAM w ../map_probes/Zm-B73-REFERENCE-NAM-5.0_Zm00001eb.1.cdna.fa
 # transkrypty v3 z https://download.maizegdb.org/B73_RefGen_v3/
-# usunięcie ndzmiarowej info z nagłówka
+# usunięcie ndmiarowej info z nagłówka
 cut -f1 -d" " Zea_mays.AGPv3.22.cdna.all.fa > x
 mv x Zea_mays.AGPv3.22.cdna.all.fa
 
