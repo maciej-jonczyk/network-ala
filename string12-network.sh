@@ -20,12 +20,8 @@ zgrep 'Zm00001d' 4577.protein.aliases.v12.0.txt.gz | cut -f1,2 -d"      " | cut 
 
 # Joining
 join -1 4 -2 1 -t" " x ../siec-ala-string/uniprot2v4 > x2
-# For network NAM protein IDs are not needed so they are filtered out to see if NAM - UniProt mapping is unique
-cut -f1,2,10 -d"   " x2 | sort -u > x3
-cut -f1 -d"        " x2 | sort | uniq -c | sed 's/ *//' | awk -v FS=" " '$1=="1"' | wc -l
-# 29398 UniProt uniquelly mapped
-cut -f1 -d"        " x2 | sort | uniq -c | sed 's/ *//' | awk -v FS=" " '$1>"1"' | wc -l
-# 4194 UniProt multimmaped
+# retain only NAM gene IDs, UniProt and mapping data
+
 
 # After discarding v4 IDs (they were only used for narrowing number of UniProt IDs) reamains 35414 rows
 cut -f1,2 -d"      " x3 | sort -u | wc -l
