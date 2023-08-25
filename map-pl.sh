@@ -63,7 +63,7 @@ java -Xmx50g -jar ~/bin/picard.jar MergeSamFiles \
 /media/mj/17d60f37-45c8-4878-8d94-7e95ff7bbddb/z-mybook/dane_old/data.fasteris.com/HDS-3/raw_data/150807_SND405_A_L001_HDS-3_R2.fastq.gz \
 | ~/bin/samtools-1.17/samtools view -bo hds3.bam
 
-# dla poniższego chuba lepiej dodać read groups picardem
+# dla poniższego chyba lepiej dodać read groups picardem
 for i in 1 2 3 5 6 9 13; do \
 ~/bin/bwa-mem2-2.2.1_x64-linux/bwa-mem2 mem -t24 -T30 /media/mj/c8e2ccd2-6313-4092-be34-46144891720f/NAMv5/Zm-B73-REFERENCE-NAM-5.0.fa \
 /media/mj/17d60f37-45c8-4878-8d94-7e95ff7bbddb/noewLinie/190822_SNK268_A_L5-7_AFEX-${i}_R1.fastq.gz \
@@ -161,7 +161,7 @@ samtools view -@24 -bq30 hds3.bam -o q30/hds3-q30.bam
 
 # O read groups
 https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4243306/
-# reczne dodanie read groups i jednoczesnie przerobienie na BAM
+# ręczne dodanie read groups i jednocześnie przerobienie na BAM
 java -jar ~/bin/picard.jar AddOrReplaceReadGroups I=11.sam O=afex11.bam RGID=afex11 RGLB=s25 RGPL=illumina RGPU=HCK3LBBXY.5.NAAGCTAG+NGCTATGT RGSM=s25
 
 # sortowanie wg name, w picard bo hds sortuję w nim przy okazji łączenia
@@ -361,7 +361,7 @@ java -jar snpEff.jar ann
 Java -Xmx60G -jar ~/bin/snpEff/snpEff.jar ann -csvStats stat.csv -s -lof -c ~/bin/snpEff/snpEff.config NAMv5 -v pl-NAM20dp5.vcf > pl-anno.vcf 2>bledy && shutdown -h +10
 # Zajęło niecałą 1 h
 
-# W ten sposób (-s -lof) statystki w html zapiosane zostały do pliku -lof a statystyki dla genów w -lof.genes.txt
+# W ten sposób (-s -lof) statystki w html zapisane zostały do pliku -lof a statystyki dla genów w -lof.genes.txt
 # po -s trzeba podać nazwę np. stats.html
 # -lof i tak jest domyślnie stosowane
 # Niżej poprawna komenda
@@ -372,7 +372,10 @@ Java -Xmx60G -jar ~/bin/snpEff/snpEff.jar ann -csvStats stat.csv -s stats.html -
 java -Xmx60G -jar ~/bin/snpEff/snpEff.jar ann -csvStats stat-def.csv -s stat-def.html -c ~/bin/snpEff/snpEff.config Zea_mays -v pl-NAM20dp5.vcf > pl-anno-def.vcf 2>bledy-def
 
 # Dokładnie te same wyniki, przynajmniej wiem, że dobrze zrobiłem genom
-# To mmały problem? -> https://www.biostars.org/p/9551178/#9551187
+# Zostawiam tylko wynik na genomie wbudowanym
+rm pl-anno.vcf
+
+# Ostrzeżenie, za krótkie transkrypty. To mały problem? -> https://www.biostars.org/p/9551178/#9551187
 
 #******************************************************** VEP ***************************************************************
 # Próba z Variant Effect Predictor z Ensembl
@@ -407,12 +410,12 @@ tar -xzf zea_mays_vep_56_Zm-B73-REFERENCE-NAM-5.0.tar.gz
 ~/bin/ensembl-vep-release-109/vep -i ../varcall-parallel/pl-NAM20dp5.vcf -o pl-vep-gtf.vcf -v -species zea_mays -format vcf --sf stats-vep-gtf.html -e -offline -cache -dir /home/mj/.vep/ -cache_version 56 -fork 24 -fasta /media/mj/c8e2ccd2-6313-4092-be34-46144891720f/NAMv5/Zm-B73-REFERENCE-NAM-5.0.fa -gtf /media/mj/c8e2ccd2-6313-4092-be34-46144891720f/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.sorted.gtf.gz -force_overwrite 2>bledy-vep-gtf
 ~/bin/ensembl-vep-release-109/vep -i ../varcall-parallel/pl-NAM20dp5.vcf -o pl-vep.vcf -v -species zea_mays -format vcf --sf stats-vep.html -e -offline -cache -dir /home/mj/.vep/ -cache_version 56 -fork 24 -fasta /media/mj/c8e2ccd2-6313-4092-be34-46144891720f/NAMv5/Zm-B73-REFERENCE-NAM-5.0.fa -force_overwrite 2>bledy-vep
 
+# Osobno dla każdej linii
 
 ~/bin/ensembl-vep-release-109/vep -i ../varcall-parallel/pl-NAM20dp5.vcf -vcf -vcf_info_field ANN -o pl-vep-gtf.vcf -individual all -v -species zea_mays -format vcf --sf stats-vep-gtf.html -e -offline -cache -dir /home/mj/.vep/ -cache_version 56 -fork 24 -buffer_size 10000 -hgvs -check_existing -check_ref -fasta /media/mj/c8e2ccd2-6313-4092-be34-46144891720f/NAMv5/Zm-B73-REFERENCE-NAM-5.0.fa -gtf /media/mj/c8e2ccd2-6313-4092-be34-46144891720f/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.sorted.gtf.gz -force_overwrite
 ~/bin/ensembl-vep-release-109/vep -i ../varcall-parallel/pl-NAM20dp5.vcf -vcf -vcf_info_field ANN -o pl-vep.vcf -individual all -v -species zea_mays -format vcf --sf stats-vep.html -e -offline -cache -dir /home/mj/.vep/ -cache_version 56 -fork 24 -buffer_size 10000 -hgvs -check_existing -check_ref -fasta /media/mj/c8e2ccd2-6313-4092-be34-46144891720f/NAMv5/Zm-B73-REFERENCE-NAM-5.0.fa -force_overwrite
 
 shutdown -h +10
-
 
 # dodać -hgvs, wymaga -fasta
 # -check_ref (sprawdzenie alleli względem sekwencj fasta, wymaga -fasta)
@@ -421,3 +424,5 @@ shutdown -h +10
 # -individual all
 # -vcf_info_field ANN, format onsequences jak w snpEff, dla porównania
 # -check_existing
+
+# Każda z analiz zajęła około miesiąca!!! I powstały gigantyczne pliki 374G i 342G
