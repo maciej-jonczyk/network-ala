@@ -7,3 +7,33 @@ The code for MZ-NAM mapping is not included here.
 The primary ID type in STRING v 12 is UniProt and mapping to AGPv4 is included.
 There is UniProt - NAM mapping in file Zm-B73-REFERENCE-NAM.UniProt.proteins.tab from https://download.maizegdb.org/Zm-B73-REFERENCE-NAM-5.0/
 So I'll use UniProt.
+
+## List of files
+
+### Outdated
+
+*/bestNAMforV3.sh* - selecting best mapping of oligo-probe to NAMv5 genome, deprecated
+
+*sieci-orto-ala.sh* - network construction based on orthology data
+
+### Current
+
+#### Probe mapping
+
+*spojne-mz-ala.sh* - selecting best oligo-probe - NAMv5 mapping. Uses */duplik030223.r*
+
+*/duplik030223.r* - some commands to compute averages for probes with multiple values
+
+#### Variant detection and further analyses
+
+*/map-pl.sh* - mapping of resequencing data. Here also variant-calling is described.
+
+*notatki.sh* - some notes and links concerning analysis
+
+- [ ] selection of interesting variants
+
+#### Network construction
+
+*string12-network.sh* - network based on STRING 12 release and UniProt IDs
+
+- [ ] construction of STRING network for all mapped probes
