@@ -50,15 +50,17 @@ for i in 16 50 68 ; do cut -f3 -d" " xok${i}uniprot | sort -u | wc -l ; done
 5308
 
 # Subsetting STRING 12 network to include only interactions for UniProts in xok... files
+# joining xok... files and retrieving only IDs
 cat xok* | cut -f3 -d" " | sort -u > xup-in-sigs
-# removing unnecessary prefix from UniProts
+# removing unnecessary prefix from UniProts in whole network
 zcat 4577.protein.links.full.v12.0.txt.gz | sed 's/4577\.//g' > xfull
 # Selecting significant UniProts
 grep -Fwf xup-in-sigs xfull > xinala
-# it seems that there is more UiProts in 4577.protein.aliases.v12.0.txt.gz than in 4577.protein.links.full.v12.0.txt.gz
+# it seems that there is more UniProts in 4577.protein.aliases.v12.0.txt.gz than in 4577.protein.links.full.v12.0.txt.gz
 wc -l uniprot.list 
 39389 uniprot.list
 cut -f2 -d" " xfull > x2
 cut -f1 -d" " xfull > x
 cat x x2 | sort -u | wc -l
 34011
+
