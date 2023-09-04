@@ -1,66 +1,97 @@
 # Uniprot - NAM list
 # /media/mj/ANTIX-LIVE/anno_fun_v45 directory
 # Files needed
-# 1. NAM - UniProt mapping Zea_mays.Zm-B73-REFERENCE-NAM-5.0.57.uniprot.tsv.gz (https://ftp.ebi.ac.uk/ensemblgenomes/pub/release-57/plants/tsv/zea_mays/)
-# 2. UniProt - v4 mapping from STRING12 4577.protein.aliases.v12.0.txt.gz
-# 3. List of differentially expressed NAMs
+# I. NAM - UniProt mapping Zea_mays.Zm-B73-REFERENCE-NAM-5.0.57.uniprot.tsv.gz
+https://ftp.ebi.ac.uk/ensemblgenomes/pub/release-57/plants/tsv/zea_mays/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.57.uniprot.tsv.gz
+# II. Full STRING 12 network for maize (4577.protein.links.full.v12.0.txt.gz)
+# III. List of differentially expressed NAMs
 # The idea is to select NAM IDs matching UniProt IDs from STRING12.
 # From this list DE NAMs will be selected and for multimapped the best UniProt will be selected
-https://ftp.ebi.ac.uk/ensemblgenomes/pub/release-57/plants/tsv/zea_mays/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.57.uniprot.tsv.gz
 
-# list of UniProts in STRING12
-# /media/mj/ANTIX-LIVE/siec-ala-string directory
-zcat 4577.protein.aliases.v12.0.txt.gz | cut -f1 | tail -n +2 | cut -f2 -d"." | sort -u > uniprot.list
-# 39389 unique
+# 1. only UniProts (UPs) from network file itself
+# checking network file
+zcat 4577.protein.links.full.v12.0.txt.gz | head -2
+zcat 4577.protein.links.full.v12.0.txt.gz | head -2 | cat -A
+# file is space-separated
+zcat 4577.protein.links.full.v12.0.txt.gz | wc -l
+23274375
+# retrieving only UPs
+cut -f1,2 -d" " <(zcat 4577.protein.links.full.v12.0.txt.gz) > x
+tr ' ' '\n' < x > x2
+# checking file
+wc -l x2
+46548750 x2
+expr 23274375 \* 2
+46548750
+# selecting unique UPs
+sort -u x2 > x3
+wc -l x3
+34011 x3
+# tidying-up file
+grep -v 'protein' x3 | sed 's/4577\.//' > x4
+wc -l x4
+# 34009 UPs in full network
 
-# /media/mj/ANTIX-LIVE/anno_fun_v45/ directory
-zcat Zea_mays.Zm-B73-REFERENCE-NAM-5.0.57.uniprot.tsv.gz | sort -k4,4 -t"  " >xnamuniprotsrt
-join -1 1 -2 4 -t" " ../siec-ala-string/uniprot.list xnamuniprotsrt | tr '\t' ' '> xnam-string
-# changing TAB to space for easier joining with expression values
-# in all 40451 rows.
-# 36501 unique gene-UniProt rows, in this 34555 unique UniProts and 29808 unique genes - so there is multimapping
+# 2. Selecting UPs present in network from file mapping UP-NAM
+# checking the mapping file
+head -n1 ../anno_fun_v45/xnamuniprotsrt | cat -A
+# file is TAB-separated
+join -1 1 -2 4 -t"	" x4 ../anno_fun_v45/xnamuniprotsrt | tr '\t' ' '> xnam-string
 # Selecting could be done also with grep but it selects also splicing forms, ie. UniProt IDs with subscript -1 or -2
 
-# Choosing the best UniProt for NAM
-# checking column names
-zcat Zea_mays.Zm-B73-REFERENCE-NAM-5.0.57.uniprot.tsv.gz | head
-# for each NAM selecting hit with the best "source_identity" (column 7)
-# if there is no data simply first UniProt is selected
-LC_ALL=C sort -k2,2 -k7,7rn -t" " xnam-string | sort -u -k2,2 -t" " > x
-mv x xbest-nam-string
+# 3. Choosing the best UP for each NAM
+# checking column numbers
+head -n1 xnam-string | tr ' ' '\n' | cat -n
+# setting locale to ensure proper sorting
+LC_ALL=C sort -k2,2 -k7,7rn -t" " xnam-string | sort -u -k2,2 -t" " > x5
+# checking file
+cut -f2 -d" " x5 | sort -u | wc -l
+33629
+mv x5 xbest-nam-string
 
-# The next step - selecting NAMs DE in Alas dataset
-# change to ../siec-ala-string/
-join -1 1 -2 2 -t" " ../ist_mm_faire/ala/ok16 ../anno_fun_v45/xbest-nam-string > xok16uniprot
-join -1 1 -2 2 -t" " ../ist_mm_faire/ala/ok50 ../anno_fun_v45/xbest-nam-string > xok50uniprot
-join -1 1 -2 2 -t" " ../ist_mm_faire/ala/ok68 ../anno_fun_v45/xbest-nam-string > xok68uniprot
-wc -l xok*
-   3431 xok16uniprot
-   5515 xok50uniprot
-   5325 xok68uniprot
-# number of unique genes
-for i in 16 50 68 ; do cut -f1 -d" " xok${i}uniprot | sort -u | wc -l ; done
-3431
-5515
-5325
-# number of unique UniProts
-for i in 16 50 68 ; do cut -f3 -d" " xok${i}uniprot | sort -u | wc -l ; done 
-3420
-5489
-5308
+# 4. The next step - selecting NAMs DE in Ala's dataset
+# checking files
+head -n2 xbest-nam-string
+head -n2 ../ist_mm_faire/ala/ok16
+head -n2 ../ist_mm_faire/ala/ok50
+head -n2 ../ist_mm_faire/ala/ok68
+# joining expression valies and network data - only shared UPs remain
+join -1 1 -2 2 -t" " ../ist_mm_faire/ala/ok16 xbest-nam-string > xok16uniprot
+less xok16uniprot
+join -1 1 -2 2 -t" " ../ist_mm_faire/ala/ok50 xbest-nam-string > xok50uniprot
+less xok50uniprot
+join -1 1 -2 2 -t" " ../ist_mm_faire/ala/ok68 xbest-nam-string > xok68uniprot
+less xok68uniprot
+# checkin files
+wc -l xok16uniprot
+3330 xok16uniprot
+wc -l xok50uniprot
+5352 xok50uniprot
+wc -l xok68uniprot
+5169 xok68uniprot
 
-# Subsetting STRING 12 network to include only interactions for UniProts in xok... files
-# joining xok... files and retrieving only IDs
+# 5. Subsetting STRING 12 network to include only interactions for UniProts in xok... files
+# joining xok... files and retrieving only UPs
 cat xok* | cut -f3 -d" " | sort -u > xup-in-sigs
 # removing unnecessary prefix from UniProts in whole network
 zcat 4577.protein.links.full.v12.0.txt.gz | sed 's/4577\.//g' > xfull
-# Selecting significant UniProts
-grep -Fwf xup-in-sigs xfull > xinala
-# it seems that there is more UniProts in 4577.protein.aliases.v12.0.txt.gz than in 4577.protein.links.full.v12.0.txt.gz
-wc -l uniprot.list 
-39389 uniprot.list
-cut -f2 -d" " xfull > x2
-cut -f1 -d" " xfull > x
-cat x x2 | sort -u | wc -l
-34011
 
+# 6. selecting UPs with expression data from full hetwork
+grep -Fwf xup-in-sigs xfull > xfull-ala
+# adding header
+head -n1 xfull > xnagl
+cat xnagl xfull-ala > x5
+mv x5 xfull-ala
+# how much unique UPs in selected subnetwork?
+cut -f1,2 -d" " xfull-ala | tr ' ' '\n' | grep -v 'protein' | sort -u > x5
+wc -l x5
+33629 x5
+# are all UPs from Ala's file in subnetwork?
+grep -Fwf xup-in-sigs x5 | wc -l
+wc -l xup-in-sigs
+# yes
+
+# Loading network (xfull-ala) to Cytoscape
+# if program returns error and not launch run:
+export EXTRA_JAVA_OPTS="-Djdk.util.zip.disableZip64ExtraFieldValidation=true"
+# Network is too huge to be loaded - filtering on "Combined score" is needed
