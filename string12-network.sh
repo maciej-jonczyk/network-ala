@@ -94,6 +94,7 @@ wc -l xup-in-sigs
 # yes
 
 # Loading network (xfull-ala) to Cytoscape
+~/bin/Cytoscape_v3.10.0/cytoscape.sh
 # if program returns error and not launch run:
 export EXTRA_JAVA_OPTS="-Djdk.util.zip.disableZip64ExtraFieldValidation=true"
 # Network is too huge to be loaded - filtering on "Combined score" is needed
@@ -114,3 +115,27 @@ awk '$16>=400' xfull-ala > xfull-ala400
 wc -l xfull-ala400
 1957023 xfull-ala400
 cut -f16 -d" " xfull-ala400 | sort -k1,1n | head
+
+# 8. Separate networks for maize lines - shared is too big, even after filter
+# does joining using 1st column will miss some UPs? (because in network a given UP can be either in 1st or 2nd column)
+cut -f1 -d" " xfull-ala400 | sort -u > x7.1
+cut -f2 -d" " xfull-ala400 | sort -u > x7.2
+wc -l x7*
+ 26537 x7.1
+ 26537 x7.2
+ 53074 total
+comm -3 x7.1 x7.2
+protein1
+        protein2
+# .. no.
+
+# 9. There are UPs with >1 NAM
+# selecting only three first columns
+cut -f1-3 -d" " xok16uniprot > xok16uniprot3
+# selecting UPs with ultiple NAMs
+cut -f3 -d" " xok16uniprot3 | sort | uniq -d > x8
+# selecting them from dataset
+grep -Fwf x8 xok16uniprot | sort -k3,3 -t" " > x9
+# now there are two categories of UPs based on expression:
+# i) congruent, keep both NAMs, average value
+# 2) with opposite values (both plus and minus), remove it from dataset
