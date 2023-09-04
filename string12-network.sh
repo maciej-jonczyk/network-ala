@@ -82,6 +82,8 @@ grep -Fwf xup-in-sigs xfull > xfull-ala
 head -n1 xfull > xnagl
 cat xnagl xfull-ala > x5
 mv x5 xfull-ala
+wc -l xfull-ala   
+11560375 xfull-ala
 # how much unique UPs in selected subnetwork?
 cut -f1,2 -d" " xfull-ala | tr ' ' '\n' | grep -v 'protein' | sort -u > x5
 wc -l x5
@@ -95,3 +97,20 @@ wc -l xup-in-sigs
 # if program returns error and not launch run:
 export EXTRA_JAVA_OPTS="-Djdk.util.zip.disableZip64ExtraFieldValidation=true"
 # Network is too huge to be loaded - filtering on "Combined score" is needed
+
+# 7. Retrieving "Combined score" for histogram plotting in R
+# checking column numbers
+head -n1 xfull-ala | tr ' ' '\n' | cat -n
+cut -f16 -d" " xfull-ala > x6
+
+# histogram construction in R - in file score-hist.r
+# No obvious cut-off visible from histograms - standard (ie. previously used) value of 400 will be used
+# settig locale to ensure that awk will work correctly
+export LC_ALL=C
+echo $LC_ALL
+C
+awk '$16>=400' xfull-ala > xfull-ala400
+# checking file
+wc -l xfull-ala400
+1957023 xfull-ala400
+cut -f16 -d" " xfull-ala400 | sort -k1,1n | head
