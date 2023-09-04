@@ -36,4 +36,6 @@ So I'll use UniProt.
 
 *string12-network.sh* - network based on STRING 12 release and UniProt IDs
 
+*score-hist.r* - histogram for "Combined score"
+
 - [ ] construction of STRING network for all mapped probes
