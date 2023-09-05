@@ -135,7 +135,24 @@ cut -f1-3 -d" " xok16uniprot > xok16uniprot3
 # selecting UPs with ultiple NAMs
 cut -f3 -d" " xok16uniprot3 | sort | uniq -d > x8
 # selecting them from dataset
-grep -Fwf x8 xok16uniprot | sort -k3,3 -t" " > x9
+grep -Fwf x8 xok16uniprot3 | sort -k3,3 -t" " > x9
+# selecting unique UPs
+grep -Fvwf x8 xok16uniprot3 | sort -k3,3 -t" " > x11
 # now there are two categories of UPs based on expression:
 # i) congruent, keep both NAMs, average value
 # 2) with opposite values (both plus and minus), remove it from dataset
+export LC_ALL=C
+echo $LC_ALL
+# sort x9 by UP and expression value
+# sort and select min value
+sort -k3,3 -k2,2n x9 | sort -k3,3 -u > x9min
+# the same for max value
+sort -k3,3 -k2,2nr x9 | sort -k3,3 -u > x9max
+# join by UP so expression values aould be compared in awk
+join -j3 -t" " x9min x9max > x9mm
+# if extreme expression values have opposite signs the multiplification give negative value
+awk '$3*$5<0{print $1}' x9mm > x9mm2del
+# select only UPs with congruent expression
+grep -Fvwf x9mm2del x9 > x10
+
+# Averaging in R
