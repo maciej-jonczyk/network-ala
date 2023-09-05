@@ -1,9 +1,9 @@
-# Wczytanie danych
+# Reading data
 s16=read.table("x16dousr_dane", header=F, sep=" ")
-# Średnia
+# Average
 mean16=aggregate(s16$V2, list(s16$V1), FUN=mean)
 write.table(mean16, "sr16", quote=F, row.names=F, sep=" ")
-# zaokrąglenie już w bashu
+# value rounding in bash
 
 s50=read.table("x50dousr_dane", header=F, sep=" ")
 mean50=aggregate(s50$V2, list(s50$V1), FUN=mean)
