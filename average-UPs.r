@@ -13,3 +13,5 @@ s16con <- s16 %>%
 # Exporting. joining will be done in bash
 write.table(s16con, "x10con", quote=F, row.names=F, sep=" ")
 write.table(sred, "x10sr", quote=F, row.names=F, sep=" ")
+
+# Repeat for other lines (s50, s68)
