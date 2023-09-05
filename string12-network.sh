@@ -156,3 +156,13 @@ awk '$3*$5<0{print $1}' x9mm > x9mm2del
 grep -Fvwf x9mm2del x9 > x10
 
 # Averaging in R
+
+# 10. Joining averages with concatenaded NAMs. And concatenating with unique file (x11)
+# require sort
+sort -k1,1 -t" " x10con > x12.1
+sort -k1,1 -t" " x10sr > x12.2
+# joining and rearranging columns
+join -j1 -t" " x12.2 x12.1 | awk '{print $3,$2,$1}' > x13
+cat x11 x13 > x16uniq-ups
+
+# Repeat steps #9. and #10. for each line (s50, s68)
