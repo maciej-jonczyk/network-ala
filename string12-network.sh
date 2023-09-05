@@ -162,8 +162,8 @@ grep -Fvwf x9mm2del x9 > x10
 # require sort
 sort -k1,1 -t" " x10con > x12.1
 sort -k1,1 -t" " x10sr > x12.2
-# joining and rearranging columns
-join -j1 -t" " x12.2 x12.1 | awk '{print $3,$2,$1}' > x13
+# joining and rearranging columns, at the same time rounding values
+join -j1 -t" " x12.2 x12.1 | awk '{printf "%s %.2f %s\n", $3,$2,$1}' > x13
 cat x11 x13 > x16uniq-ups
 
 # Repeat steps #9. and #10. for each line (s50, s68)
