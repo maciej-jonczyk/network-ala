@@ -150,6 +150,7 @@ sort -k3,3 -k2,2n x9 | sort -k3,3 -u > x9min
 sort -k3,3 -k2,2nr x9 | sort -k3,3 -u > x9max
 # join by UP so expression values aould be compared in awk
 join -j3 -t" " x9min x9max > x9mm
+# Attention! at this point it could seem that if NAMs for a given UP have the same value, one of NAM is lost. This should not affect averaging.
 # if extreme expression values have opposite signs the multiplification give negative value
 awk '$3*$5<0{print $1}' x9mm > x9mm2del
 # select only UPs with congruent expression
