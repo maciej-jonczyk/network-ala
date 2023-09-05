@@ -167,3 +167,24 @@ join -j1 -t" " x12.2 x12.1 | awk '{printf "%s %.2f %s\n", $3,$2,$1}' > x13
 cat x11 x13 > x16uniq-ups
 
 # Repeat steps #9. and #10. for each line (s50, s68)
+
+# 11. Cleaning directory
+mv x16uniq-ups s16uniq-ups
+mv x50uniq-ups s50uniq-ups
+mv x68uniq-ups s68uniq-ups
+mv xbest-nam-string best-nam-string
+mv xfull full
+mv xfull-ala full-ala
+mv xfull-ala400 full-ala400
+mv xnagl nagl
+mv xnam-string nam-string
+mv xok16uniprot ok16uniprot
+mv xok16uniprot3 ok16uniprot3
+mv xok50uniprot ok50uniprot
+mv xok50uniprot3 ok50uniprot3
+mv xok68uniprot ok68uniprot
+mv xok68uniprot3 ok68uniprot3
+mv xup-in-sigs up-in-sigs
+
+ls x*
+rm x*
