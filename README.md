@@ -4,7 +4,7 @@ The aim of this repo is create protein interaction network for gene expression d
 The starting point is a mapping between oligo probes (abbreviated MZ) to maize genes (NAM v5 assembly, dubbed NAM).
 The code for MZ-NAM mapping is not included here.
 
-The primary ID type in STRING v 12 is UniProt and mapping to AGPv4 is included.
+The primary ID type in STRING v 12 is UniProt (abbreviated *UP* here) and mapping to AGPv4 is included.
 There is UniProt - NAM mapping in file Zm-B73-REFERENCE-NAM.UniProt.proteins.tab from https://download.maizegdb.org/Zm-B73-REFERENCE-NAM-5.0/
 So I'll use UniProt.
 
@@ -12,7 +12,7 @@ So I'll use UniProt.
 
 ### Outdated
 
-*/bestNAMforV3.sh* - selecting best mapping of oligo-probe to NAMv5 genome, deprecated
+*bestNAMforV3.sh* - selecting best mapping of oligo-probe to NAMv5 genome, deprecated
 
 *sieci-orto-ala.sh* - network construction based on orthology data
 
@@ -22,7 +22,7 @@ So I'll use UniProt.
 
 *spojne-mz-ala.sh* - selecting best oligo-probe - NAMv5 mapping. Uses */duplik030223.r*
 
-*/duplik030223.r* - some commands to compute averages for probes with multiple values
+*duplik030223.r* - some commands to compute averages for probes with multiple values
 
 #### Variant detection and further analyses
 
@@ -37,5 +37,7 @@ So I'll use UniProt.
 *string12-network.sh* - network based on STRING 12 release and UniProt IDs
 
 *score-hist.r* - histogram for "Combined score"
+
+*average-UPs.r* - R script for expression averaging (averaging for different NAMs mapped to one UP)
 
 - [ ] construction of STRING network for all mapped probes
