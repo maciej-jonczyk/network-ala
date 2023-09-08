@@ -33,7 +33,9 @@ wc -l x4
 # 34009 UPs in full network
 
 # 2. Selecting UPs present in network from file mapping UP-NAM
-# checking the mapping file
+# mapping file
+zcat Zea_mays.Zm-B73-REFERENCE-NAM-5.0.57.uniprot.tsv.gz | sort -k4,4 -t"        " >xnamuniprotsrt
+# checking
 head -n1 ../anno_fun_v45/xnamuniprotsrt | cat -A
 # file is TAB-separated
 join -1 1 -2 4 -t"	" x4 ../anno_fun_v45/xnamuniprotsrt | tr '\t' ' '> xnam-string
