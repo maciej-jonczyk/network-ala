@@ -170,7 +170,7 @@ cat x11 x13 > x16uniq-ups
 
 # Repeat steps #9. and #10. for each line (s50, s68)
 
-# 11. Cleaning directory
+# 11. Cleaning directories
 mv x16uniq-ups s16uniq-ups
 mv x50uniq-ups s50uniq-ups
 mv x68uniq-ups s68uniq-ups
@@ -187,6 +187,12 @@ mv xok50uniprot3 ok50uniprot3
 mv xok68uniprot ok68uniprot
 mv xok68uniprot3 ok68uniprot3
 mv xup-in-sigs up-in-sigs
+ls x*
+rm x*
 
+cd ../anno_fun_v45
+mv xbest-nam-string best-nam-string
+mv xnam-string nam-string
+mv xnamuniprotsrt namuniprotsrt
 ls x*
 rm x*
