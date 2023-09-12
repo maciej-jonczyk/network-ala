@@ -20,19 +20,21 @@ So I'll use UniProt.
 
 #### Probe mapping
 
-*spojne-mz-ala.sh* - selecting best oligo-probe - NAMv5 mapping. Uses */duplik030223.r*
+*spojne-mz-ala.sh* - selecting best oligo-probe - NAMv5 mapping. Uses *duplik030223.r*
 
 *duplik030223.r* - some commands to compute averages for probes with multiple values
 
 #### Variant detection and further analyses
 
-*/map-pl.sh* - mapping of resequencing data. Here also variant-calling is described.
+*map-pl.sh* - mapping of resequencing data. Here also variant-calling is described.
 
 *notatki.sh* - some notes and links concerning analysis
 
 - [ ] selection of interesting variants
 
 #### Network construction
+
+*annotation.sh* - functional annotation of genes, direct from NAM and translated from AGPv4
 
 **new** *network-map-string.sh* - network based on mapping of proteins in STRING 12
 
