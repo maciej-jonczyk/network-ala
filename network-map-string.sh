@@ -36,4 +36,37 @@ zcat STRG0A98KWY.protein.links.full.v12.0.txt.gz | cut -f1 -d" " | tail -n +2 | 
 # deleting not needed strings
 zcat STRG0A98KWY.protein.links.full.v12.0.txt.gz | sed 's/STRG0A98KWY\.//g;s/_P00[0-9]//g' > net-full
 
+# 6. Separate network for each maize line - joining with appropriate expression file
+# does each ID is present in the 1st column - which become "source node"?
+cut -f1 -d" " net-full | tail -n +2 | sort -u > x
+cut -f1,2 -d" " net-full | tail -n +2 | tr ' ' '\n' | sort -u > x2
+wc -l x x2
+comm -3 x x2
+# yes
+# so "net-full" and expression file can be joined by "source node"
+# test for s16
+tail -n +2 net-full | sort -k1,1 -t" " > xnet-full
+# header
+head -n1 net-full > xhead
+awk '{print $0,"expr"}' xhead > xhead2
+# joining network and expression
+join -j1 -t" " xnet-full ../../ist_mm_faire/ala/ok16 > xnet16
+cat xhead2 xnet16 > net16
+# network too large for visualisation inCytoscape - filtering needed
+# as in #7. of string12-network.sh and again no clear cut-off for "combined score"
+# Both score and expression filtering can be done in Cytoscape
+
+# networks for other twolines
+join -j1 -t" " xnet-full ../../ist_mm_faire/ala/ok50 > xnet50
+cat xhead2 xnet50 > net50
+head -n2 net50
+join -j1 -t" " xnet-full ../../ist_mm_faire/ala/ok68 > xnet68
+cat xhead2 xnet68 > net68
+
+# how many IDs with expression changes are in network for each line?
+wc -l net[0-9][0-9]
+   794607 net16
+  1397512 net50
+  1327090 net68
+
 
