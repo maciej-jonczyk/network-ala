@@ -27,6 +27,16 @@ fulldownload.txt
 https://download.maizegdb.org/GeneFunction_and_Expression/
 # selecting rows with annotation
 cut -f1,11,12 -d"  " fulldownload.txt | awk -v FS="\t" -v OFS="\t" '{print $1,$2"|"$3}' | grep -Fv " | " > NAM-funct
+# Concatenating two annotation files using only NAMs
+tail -n +2 NAM-funct > x
+# at the same time sorting uniquelly ignoring case and remove noninformatie annotations
+cat x UP-NAM-funct-noup | sort -uf | grep -Fwv 'Uncharacterized' > NAM-funct-all
+# is that lessen number of annotated IDs?
+cat x UP-NAM-funct-noup | sort -u | grep -Fwv 'Uncharacterized' | cut -f1 -d"      " | sort -u | wc -l
+14469
+cat x UP-NAM-funct-noup | sort -u | cut -f1 -d"    " | sort -u | wc -l
+15807
+# Yes
 
 # 2. Concatenation of annotations for V4
 # first file, extracting only V4 and annotation (with some filtering)
