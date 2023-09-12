@@ -34,13 +34,6 @@ zcat STRG0A98KWY.protein.links.full.v12.0.txt.gz | cut -f1 -d" " | tail -n +2 | 
 
 # 5. Preparing network for Cytoscape and joining with expression values
 # deleting not needed strings
-zcat STRG0A98KWY.protein.links.full.v12.0.txt.gz | sed 's/STRG0A98KWY\.//g;s/_P00[0-9]//g' > x
-# extracting header
-zcat STRG0A98KWY.protein.links.full.v12.0.txt.gz | head -n1 > xnagl
-# concatenating
-cat xnagl x > net-full
-# cleaning directory
-rm xnagl x
-
+zcat STRG0A98KWY.protein.links.full.v12.0.txt.gz | sed 's/STRG0A98KWY\.//g;s/_P00[0-9]//g' > net-full
 
 
