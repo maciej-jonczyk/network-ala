@@ -34,6 +34,8 @@ So I'll use UniProt.
 
 #### Network construction
 
+**new** *network-map-string.sh* - network based on mapping of proteins in STRING 12
+
 *string12-network.sh* - network based on STRING 12 release and UniProt IDs
 
 *score-hist.r* - histogram for "Combined score"
