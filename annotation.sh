@@ -1,3 +1,4 @@
+export LC_ALL=C
 # 0. NAM to V4 mapping
 # concatenating files (retrieved from BiomaRt in five parts due to server limits)
 cat genes_part0[0-9]v5* | grep -Fv 'input' > x
