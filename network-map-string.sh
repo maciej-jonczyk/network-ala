@@ -69,4 +69,14 @@ wc -l net[0-9][0-9]
   1397512 net50
   1327090 net68
 
-
+# Joining all expression data with network
+join -j1 -t" " -a1 -a2 -o0,1.2,2.2 ok16 ok50 > x
+join -j1 -t" " -a1 -a2 -o0,1.2,1.3,2.2 x ok68 > x2
+sed 's/  / 0.00 /;s/  / 0.00 /;s/ $/ 0.00/' x2 > okall
+join -j1 -t" " xnet-full ../../ist_mm_faire/ala/okall > xnetall
+# header
+cat > x
+expr16 expr50 expr68
+paste -d" " xhead x > xhead2
+# adding header
+cat xhead2 xnetall > netall
