@@ -27,6 +27,7 @@ fulldownload.txt
 https://download.maizegdb.org/GeneFunction_and_Expression/
 # selecting rows with annotation
 cut -f1,11,12 -d"  " fulldownload.txt | awk -v FS="\t" -v OFS="\t" '{print $1,$2"|"$3}' | grep -Fv " | " > NAM-funct
+
 # Concatenating two annotation files using only NAMs
 tail -n +2 NAM-funct > x
 # at the same time sorting uniquelly ignoring case and remove noninformatie annotations
@@ -49,7 +50,7 @@ tail -n +2 x6 > x7
 # combining and uniquely sort
 cat x x7 | sort -uf > V4-funct
 
-# Using NAM2v4-redund
+# Translate to NAM Using NAM2v4-redund
 join -1 2 -2 1 -t" " NAM2v4-redund V4-funct > V4-NAM-funct
 # leaving only NAM and annotation
 cut -f2,3 -d"      " V4-NAM-funct | sed 's/\t /\t/g' | sort -uf > V4-NAM-funct-nov4
