@@ -20,7 +20,7 @@ grep -B1 '^[ACGT]\{50\}$' oligo_uniq.fa | grep '>' | sed 's/>//' > oligo50nt
 # -> SOLVED - different path to program in recorded command and different user name in the file header
 
 # extracting only hit stats
-grep '>' o2cdna > o2cdna_hits
+grep '^>' o2cdna > o2cdna_hits
 
 # 2. Filtering
 # selecting hits for short probes
