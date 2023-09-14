@@ -38,7 +38,7 @@ mv o2cdna_hits70nt oligo70
 # change dir
 cd oligo70
 
-# Filtering for long probes (70nt)
+#*************************************************** Filtering for long probes (70nt) ************************************************
 # selecting perfect hits
 awk '$11==70 && $12==70 && $13==0' o2cdna_hits70nt | sort > o2cdna_perfect70
 # selecting non-perfect hits
@@ -97,3 +97,60 @@ rm mapped1[0-8] mapped[0-9]
 
 # Combining data for mapped probes
 cat o2cdna_perfect70_combid_1hit mapped[0-9]* > alluniqbest70
+
+#*********************************************** Similar procedure for 50nt probes ********************************************************
+export LC_ALL=C
+# Selecting perfect matches
+awk '$11==50 && $12==50 && $13==0' o2cdna_hits50nt > o2cdna_perfect50
+# selecting non-perfect matches
+awk '$11<50 || $12<50 || $13>0' o2cdna_hits50nt > o2cdna_noperfect50
+# Removing probe:gene pairs with perfect match from set noperfect
+# adding IDs
+awk '{print $1":"$5}' o2cdna_perfect50 | tr -d '>' | cut -f1 -d"_" > xperf50id
+awk '{print $1":"$5}' o2cdna_noperfect50 | tr -d '>' | cut -f1 -d"_" > xnoperf50id
+paste -d" " o2cdna_perfect50 xperf50id > o2cdna_perfect50_combid
+paste -d" " o2cdna_noperfect50 xnoperf50id > o2cdna_noperfect50_combid
+# removing from noperfect additional hits for perfect pairs
+grep -Fwvf xperf50id o2cdna_noperfect50_combid > o2cdna_noperfect50_combid_noperfectid
+# Are there only one gene with perfect match to a given?
+sort -u xperf50id > xperf50id_u
+cut -f1 -d":" xperf50id_u | uniq -d > unmapped50id
+# filtering-out multimammping perfect
+grep -Fwvf unmapped50id o2cdna_perfect50_combid > o2cdna_perfect50_combid_1hit
+# removing this probes also from noperfect set
+grep -Fwvf unmapped50id o2cdna_noperfect50_combid_noperfectid > o2cdna_noperfect50_combid_noperfectid_nounmpapped
+# IDs of unique probes with perfect match
+cut -f1 -d" " o2cdna_perfect50_combid_1hit | tr -d '>' | sort -u > ids_perf_1hit
+# filtering-out suboptimal hits for probes with perfect match
+grep -Fwvf ids_perf_1hit o2cdna_noperfect50_combid_noperfectid_nounmpapped > o2cdna_noperfect50_no1hit
+# Sequential removing increasingly bad alignments
+# first filter there must be 49 paired bases
+awk '$12-$13>=49' o2cdna_noperfect50_no1hit > x
+cut -f14 -d" " x | sort -u > o2gen49
+# equally good for >1 probe
+cut -f1 -d":" o2gen49 | uniq -c | sed 's/^ *//' > o2gen49_num
+awk -v FS=" " '$1>1' o2gen49_num  > unmapped49_num
+# removing from dataset
+cut -f2 -d" " unmapped49_num > unmapped49id
+grep -Fwvf unmapped49id x > mapped49
+# IDs mapped 49
+cut -f1 -d" " mapped49 | sort -u | sed 's/>//' > xmap49id
+grep -Fwvf xmap49id x3 > xno49
+
+#*************************** Use of external file ************************************************
+# Sequentially selecting the best unique mapping for probes. Increasingly worse alignment.
+# Using shell script skrypt_v2.sh (the same as for 70nt probes) and list of commands using it - komendy_skryptu50 (pasting them in terminal).
+# As system don't allow to run scripts from removable media it is most convenient to move/copy skrypt_v2.sh to home directory.
+# File komendy_skryptu50 uses such setting.
+cp -a skrypt_v2.sh ~
+chmod a+rwx ~/skrypt_v2.sh
+#*************************************************************************************************
+
+# the shortest match is 20nt long, so >19 filter is not needed
+# removing empty files
+find . -type f -size 0c -delete
+
+# Combining mapped probes
+cat o2cdna_perfect50_combid_1hit mapped[0-9]* > alluniqbest50
+
+#*********************************************** Similar procedure for 40nt probes ********************************************************
