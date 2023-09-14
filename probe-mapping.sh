@@ -30,9 +30,17 @@ grep -Fwf oligo50nt o2cdna_hits > o2cdna_hits50nt
 grep -Fwvf oligo40nt o2cdna_hits > x
 grep -Fwvf oligo50nt x > o2cdna_hits70nt
 
+# moving hits to separate directories according to probe length
+mv o2cdna_hits40nt oligo40
+mv o2cdna_hits50nt oligo50
+mv o2cdna_hits70nt oligo70
+
+# change dir
+cd oligo70
+
 # Filtering for long probes (70nt)
 # selecting perfect hits
-awk '$11==70 && $12==70 && $13==0' o2cdna_hits70nt > o2cdna_perfect70
+awk '$11==70 && $12==70 && $13==0' o2cdna_hits70nt | sort > o2cdna_perfect70
 # selecting non-perfect hits
 awk '$11<70 || $12<70 || $13>0' o2cdna_hits70nt > o2cdna_noperfect70
 
@@ -77,10 +85,15 @@ grep -Fwvf xmap69id x3 > xno69
 
 #*************************** Use of external file ************************************************
 # 4. Sequentially selecting the best unique mapping for probes. Increasingly worse alignment.
-# using shell script skrypt_v2.sh and list of commands using it - komendy_skryptu (pasting them in terminal)
+# Using shell script skrypt_v2.sh and list of commands using it - komendy_skryptu (pasting them in terminal).
+# As system don't allow to run scripts from removable media it is most convenient to move/copy skrypt_v2.sh to home directory.
+# File komendy_skryptu uses such setting.
+cp -a skrypt_v2.sh ~
+chmod a+rwx ~/skrypt_v2.sh
 #*************************************************************************************************
 
-# manual removing files for alignment below 19nt
+# removing files for alignment below 19nt
+rm mapped1[0-8] mapped[0-9]
 
 # Combining data for mapped probes
-cat o2cdna_perfect70_combid_1hit mapped* > alluniqbest70
+cat o2cdna_perfect70_combid_1hit mapped[0-9]* > alluniqbest70
