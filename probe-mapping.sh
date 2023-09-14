@@ -146,6 +146,7 @@ cp -a skrypt_v2.sh ~
 chmod a+rwx ~/skrypt_v2.sh
 #*************************************************************************************************
 
+ls -lSr mapped[0-9]*
 # the shortest match is 20nt long, so >19 filter is not needed
 # removing empty files
 find . -type f -size 0c -delete
@@ -154,3 +155,66 @@ find . -type f -size 0c -delete
 cat o2cdna_perfect50_combid_1hit mapped[0-9]* > alluniqbest50
 
 #*********************************************** Similar procedure for 40nt probes ********************************************************
+export LC_ALL=C
+# Selecting perfect hits
+awk '$11==40 && $12==40 && $13==0' o2cdna_hits40nt > o2cdna_perfect40
+# selecting non-perfect hits
+awk '$11<40 || $12<40 || $13>0' o2cdna_hits40nt > o2cdna_noperfect40
+# filtering-out perfect oligo:gen pairs from noperfect set
+# adding IDs
+awk '{print $1":"$5}' o2cdna_perfect40 | tr -d '>' | cut -f1 -d"_" > xperf40id
+awk '{print $1":"$5}' o2cdna_noperfect40 | tr -d '>' | cut -f1 -d"_" > xnoperf40id
+paste -d" " o2cdna_perfect40 xperf40id > o2cdna_perfect40_combid
+paste -d" " o2cdna_noperfect40 xnoperf40id > o2cdna_noperfect40_combid
+# removing from noperfect extra hits for perfect pairs
+grep -Fwvf xperf40id o2cdna_noperfect40_combid > o2cdna_noperfect40_combid_noperfectid
+# Does a given probe maps perfectly to one gene only?
+sort -u xperf40id > xperf40id_u
+cut -f1 -d":" xperf40id_u | uniq -c | sed 's/^ *//' > xperf40id_num
+awk '$1>1' xperf40id_num  > unmapped40id_num
+cut -f2 -d" " unmapped40id_num > unmapped40id
+# Filtering-out multimammping perfect
+grep -Fwvf unmapped40id o2cdna_perfect40_combid > o2cdna_perfect40_combid_1hit
+# these probes are also removed from noperfect set
+grep -Fwvf unmapped40id o2cdna_noperfect40_combid_noperfectid > o2cdna_noperfect40_combid_noperfectid_nounmpapped
+# IDs of unique probes with perfect match
+cut -f1 -d" " o2cdna_perfect40_combid_1hit | tr -d '>' | sort -u > ids_perf_1hit
+# filtering-out suboptimal hits for probes having perfect hits
+grep -Fwvf ids_perf_1hit o2cdna_noperfect40_combid_noperfectid_nounmpapped > o2cdna_noperfect40_no1hit
+# Sequentially removing increasingly bad alignments
+# filter for 39 paired bases
+awk '$12-$13>=39' o2cdna_noperfect40_no1hit > x
+cut -f14 -d" " x | sort -u > o2gen39
+# equally good for >1 probe
+cut -f1 -d":" o2gen39 | uniq -c | sed 's/^ *//' > o2gen39_num
+awk '$1>1' o2gen39_num  > unmapped39_num
+# removing from dataset
+cut -f2 -d" " unmapped39_num > unmapped39id
+grep -Fwvf unmapped39id x > mapped39
+grep -Fwvf unmapped39id o2cdna_noperfect40_no1hit > x3
+# IDs of mapped 39
+cut -f1 -d" " mapped39 | sort -u | tr -d '>' > xmap39id
+grep -Fwvf xmap39id x3 > xno39
+
+#*************************** Use of external file ************************************************
+# Sequentially selecting the best unique mapping for probes. Increasingly worse alignment.
+# Using shell script skrypt_v2.sh (the same as for 70nt probes) and list of commands using it - komendy_skryptu40 (pasting them in terminal).
+# As system don't allow to run scripts from removable media it is most convenient to move/copy skrypt_v2.sh to home directory.
+# File komendy_skryptu40 uses such setting.
+cp -a skrypt_v2.sh ~
+chmod a+rwx ~/skrypt_v2.sh
+#*************************************************************************************************
+
+ls -lSr mapped[0-9]*
+# the shortest match is 20nt long, so >19 filter is not needed
+# removing empty files
+find . -type f -size 0c -delete
+
+# concatenating mapped probes
+cat o2cdna_perfect40_combid_1hit mapped[0-9]* > alluniqbest40
+
+#************************* Combining all unique alignments of probes *******************************
+cd ../bbest_cdna
+cat ../oligo*/alluniqbest* > alluniqbest
+# retriewing only ID info
+cut -f14 -d" " alluniqbest | tr ':' ' ' | sort -u > alluniq_best_ids
