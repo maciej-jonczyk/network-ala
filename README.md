@@ -23,7 +23,6 @@ So I'll use UniProt.
 *probe-mapping.sh* - main file describing microarray probe mapping. This file uses:
 - *skrypt_v2.sh* - script for selecting the longest alignment for each probe
 - *komendy_skryptu*, *komendy_skryptu40*, *komendy_skryptu50* - commands for pasting to terminal
-- [ ] how oligo_uniq.fa was constructed?
 
 *spojne-mz-ala.sh* - selecting best oligo-probe - NAMv5 mapping. Uses *duplik030223.r*
 
