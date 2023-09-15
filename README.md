@@ -4,9 +4,8 @@ The aim of this repo is create protein interaction network for gene expression d
 The starting point is a mapping between oligo probes (abbreviated *MZ*) to maize genes (NAM v5 assembly, dubbed *NAM*).
 The code for MZ-NAM mapping is not included here.
 
-The primary ID type in STRING v 12 is UniProt (abbreviated *UP* here) and mapping to AGPv4 is included.
-There is UniProt - NAM mapping in file Zm-B73-REFERENCE-NAM.UniProt.proteins.tab from https://download.maizegdb.org/Zm-B73-REFERENCE-NAM-5.0/
-So I'll use UniProt.
+The primary ID type in STRING v 12 is UniProt (abbreviated *UP* here) and mapping to AGPv4 but no to NAM is included.
+To avoid arbitraly choices during matching NAMs to V4 and UPs and selecting best mapping I will use protein-mapping facility at STRING12 website.
 
 ## List of files
 
