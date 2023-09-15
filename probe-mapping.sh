@@ -7,7 +7,10 @@
 export LC_ALL=C
 
 # 1. Mapping
-# HOW fasta_uniq.fa WAS DONE?
+# Remove duplicates from fasta, some control sequences are given ultiple times
+# using seqkit, installed from Ubuntu repo
+seqkit rmdup -n oligo.fa -o oligo_uniq.fa
+
 # splitting for mapping to genome - NOT USED HERE
 fasta-splitter.pl --n-parts 24 --line-length 70 oligo_uniq.fa
 # select probes shorter than usual 70nt
