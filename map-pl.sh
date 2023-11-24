@@ -129,7 +129,7 @@ hds${i}${j}.bam \
 -f /media/mj/c8e2ccd2-6313-4092-be34-46144891720f/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf \
 -o bamqc-raw; done ; done
 
-# bez 11 bo ręcznie zroiony
+# bez 11 bo ręcznie zrobiony
 for i in 1 2 3 5 6 9 13; do \
 ~/bin/BamQC-master/bin/bamqc \
 afex${i}.bam \
@@ -442,4 +442,4 @@ java -jar ~/bin/snpEff/SnpSift.jar intIdx ../../call-vep/pl-vep-gtf.vcf /media/m
 # Oglądanie w IGV
 # genom: /media/mj/c8e2ccd2-6313-4092-be34-46144891720f/NAMv5/Zm-B73-REFERENCE-NAM-5.0.fa
 # bam'y użyte do freebayes: /media/mj/17d60f37-45c8-4878-8d94-7e95ff7bbddb/map-pl/sort4varcall
-# vcf'y: /media/mj/17d60f37-45c8-4878-8d94-7e95ff7bbddb/map-pl/sort4varcall
+# vcf'y: /media/mj/17d60f37-45c8-4878-8d94-7e95ff7bbddb/map-pl/varcall-parallel/wybor-z-art
