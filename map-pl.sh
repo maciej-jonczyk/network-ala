@@ -443,3 +443,4 @@ java -jar ~/bin/snpEff/SnpSift.jar intIdx ../../call-vep/pl-vep-gtf.vcf /media/m
 # genom: /media/mj/c8e2ccd2-6313-4092-be34-46144891720f/NAMv5/Zm-B73-REFERENCE-NAM-5.0.fa
 # bam'y użyte do freebayes: /media/mj/17d60f37-45c8-4878-8d94-7e95ff7bbddb/map-pl/sort4varcall
 # vcf'y: /media/mj/17d60f37-45c8-4878-8d94-7e95ff7bbddb/map-pl/varcall-parallel/wybor-z-art
+# gtf: /media/mj/c8e2ccd2-6313-4092-be34-46144891720f/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.sorted.gtf
