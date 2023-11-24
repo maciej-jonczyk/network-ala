@@ -330,7 +330,7 @@ cp /media/mj/c8e2ccd2-6313-4092-be34-46144891720f/NAMv5/Zm-B73-REFERENCE-NAM-5.0
 mv Zm-B73-REFERENCE-NAM-5.0_Zm00001eb.1.cds.fa.gz cds.fa.gz
 # pobranie białek, też do kontroli
 wget -nd -np https://download.maizegdb.org/Zm-B73-REFERENCE-NAM-5.0/Zm-B73-REFERENCE-NAM-5.0_Zm00001eb.1.protein.fa.gz -O protein.fa.gz
-# Koniecznie trzeba zmienić IDs w pliku proteins inczej ich nie znajduje i protein check daje error
+# Koniecznie trzeba zmienić IDs w pliku proteins inaczej ich nie znajduje i protein check daje error
 cp protein.fa.gz beckup-protein.fa.gz
 zcat beckup-protein.fa.gz | sed 's/_P/_T/' | gzip > protein.fa.gz
 mkdir ../genomes
@@ -368,14 +368,16 @@ Java -Xmx60G -jar ~/bin/snpEff/snpEff.jar ann -csvStats stat.csv -s -lof -c ~/bi
 Java -Xmx60G -jar ~/bin/snpEff/snpEff.jar ann -csvStats stat.csv -s stats.html -c ~/bin/snpEff/snpEff.config NAMv5 -v pl-NAM20dp5.vcf > pl-anno.vcf 2>bledy && shutdown -h +10
 
 # Sporo błędów -> robię procedure z wbudowanym genomem v5.1
-# "Genome stats" identyczne jak dla genomu ktory sam zrobilem
+# "Genome stats" identyczne jak dla genomu który sam zrobilem
 java -Xmx60G -jar ~/bin/snpEff/snpEff.jar ann -csvStats stat-def.csv -s stat-def.html -c ~/bin/snpEff/snpEff.config Zea_mays -v pl-NAM20dp5.vcf > pl-anno-def.vcf 2>bledy-def
 
 # Dokładnie te same wyniki, przynajmniej wiem, że dobrze zrobiłem genom
 # Zostawiam tylko wynik na genomie wbudowanym
 rm pl-anno.vcf
+# wynik jest w 17d60f37-45c8-4878-8d94-7e95ff7bbddb/map-pl/varcall-parallel
 
 # Ostrzeżenie, za krótkie transkrypty. To mały problem? -> https://www.biostars.org/p/9551178/#9551187
+
 
 #******************************************************** VEP ***************************************************************
 # Próba z Variant Effect Predictor z Ensembl
@@ -426,3 +428,18 @@ shutdown -h +10
 # -check_existing
 
 # Każda z analiz zajęła około miesiąca!!! I powstały gigantyczne pliki 374G i 342G
+
+# ****************************** Powrót do analiz 24.11.23 ********************************
+
+# Wybór wariantów zwiazanych z genami z artykułów
+# Najpierw zrobiłem plik bed z koordynatami - /media/mj/c8e2ccd2-6313-4092-be34-46144891720f/geny-chlod/geny-z-snp.bed
+# kopia do /media/mj/17d60f37-45c8-4878-8d94-7e95ff7bbddb/map-pl/varcall-parallel/wybor-z-art i działanie na tym poziomie
+# dla każdej z analiz anotacji wariantów
+java -jar ~/bin/snpEff/SnpSift.jar intIdx ../pl-anno-def.vcf /media/mj/c8e2ccd2-6313-4092-be34-46144891720f/geny-chlod/geny-z-snp.bed > geny-z-snp_eff.vcf
+java -jar ~/bin/snpEff/SnpSift.jar intIdx ../../call-vep/pl-vep.vcf /media/mj/c8e2ccd2-6313-4092-be34-46144891720f/geny-chlod/geny-z-snp.bed > geny-z-snp_vep.vcf
+java -jar ~/bin/snpEff/SnpSift.jar intIdx ../../call-vep/pl-vep-gtf.vcf /media/mj/c8e2ccd2-6313-4092-be34-46144891720f/geny-chlod/geny-z-snp.bed > geny-z-snp_vep-gtf.vcf
+
+# Oglądanie w IGV
+# genom: /media/mj/c8e2ccd2-6313-4092-be34-46144891720f/NAMv5/Zm-B73-REFERENCE-NAM-5.0.fa
+# bam'y użyte do freebayes: /media/mj/17d60f37-45c8-4878-8d94-7e95ff7bbddb/map-pl/sort4varcall
+# vcf'y: /media/mj/17d60f37-45c8-4878-8d94-7e95ff7bbddb/map-pl/sort4varcall
