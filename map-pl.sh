@@ -438,6 +438,8 @@ shutdown -h +10
 java -jar ~/bin/snpEff/SnpSift.jar intIdx ../pl-anno-def.vcf /media/mj/c8e2ccd2-6313-4092-be34-46144891720f/geny-chlod/geny-z-snp.bed > geny-z-snp_eff.vcf
 java -jar ~/bin/snpEff/SnpSift.jar intIdx ../../call-vep/pl-vep.vcf /media/mj/c8e2ccd2-6313-4092-be34-46144891720f/geny-chlod/geny-z-snp.bed > geny-z-snp_vep.vcf
 java -jar ~/bin/snpEff/SnpSift.jar intIdx ../../call-vep/pl-vep-gtf.vcf /media/mj/c8e2ccd2-6313-4092-be34-46144891720f/geny-chlod/geny-z-snp.bed > geny-z-snp_vep-gtf.vcf
+# I dla VCF bez anotacji
+java -jar ~/bin/snpEff/SnpSift.jar intIdx ../pl-NAM20dp5.vcf /media/mj/c8e2ccd2-6313-4092-be34-46144891720f/geny-chlod/geny-z-snp.bed > geny-z-snp.vcf
 
 # Oglądanie w IGV
 # genom: /media/mj/c8e2ccd2-6313-4092-be34-46144891720f/NAMv5/Zm-B73-REFERENCE-NAM-5.0.fa
