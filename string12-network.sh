@@ -1,5 +1,5 @@
 # Uniprot - NAM list
-# /media/mj/ANTIX-LIVE/anno_fun_v45 directory
+# /media/mj/ANTIX-LIVE/siec-ala-string directory
 # Files needed
 # I. NAM - UniProt mapping Zea_mays.Zm-B73-REFERENCE-NAM-5.0.57.uniprot.tsv.gz
 https://ftp.ebi.ac.uk/ensemblgenomes/pub/release-57/plants/tsv/zea_mays/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.57.uniprot.tsv.gz
@@ -51,20 +51,20 @@ cut -f2 -d" " x5 | sort -u | wc -l
 33629
 mv x5 xbest-nam-string
 
-# 4. The next step - selecting NAMs DE in Ala's dataset
+# 4. Selecting NAMs DE in Ala's dataset
 # checking files
 head -n2 xbest-nam-string
 head -n2 ../ist_mm_faire/ala/ok16
 head -n2 ../ist_mm_faire/ala/ok50
 head -n2 ../ist_mm_faire/ala/ok68
-# joining expression valies and network data - only shared UPs remain
+# joining expression values and network data - only shared UPs will remain
 join -1 1 -2 2 -t" " ../ist_mm_faire/ala/ok16 xbest-nam-string > xok16uniprot
 less xok16uniprot
 join -1 1 -2 2 -t" " ../ist_mm_faire/ala/ok50 xbest-nam-string > xok50uniprot
 less xok50uniprot
 join -1 1 -2 2 -t" " ../ist_mm_faire/ala/ok68 xbest-nam-string > xok68uniprot
 less xok68uniprot
-# checkin files
+# checking files
 wc -l xok16uniprot
 3330 xok16uniprot
 wc -l xok50uniprot
@@ -108,7 +108,7 @@ cut -f16 -d" " xfull-ala > x6
 
 # histogram construction in R - in file score-hist.r
 # No obvious cut-off visible from histograms - standard (ie. previously used) value of 400 will be used
-# settig locale to ensure that awk will work correctly
+# setting locale to ensure that awk will work correctly
 export LC_ALL=C
 echo $LC_ALL
 C
@@ -134,7 +134,7 @@ protein1
 # 9. There are UPs with >1 NAM
 # selecting only three first columns
 cut -f1-3 -d" " xok16uniprot > xok16uniprot3
-# selecting UPs with ultiple NAMs
+# selecting UPs with multiple NAMs
 cut -f3 -d" " xok16uniprot3 | sort | uniq -d > x8
 # selecting them from dataset
 grep -Fwf x8 xok16uniprot3 | sort -k3,3 -t" " > x9
