@@ -81,7 +81,10 @@ java -jar picard.jar MarkDuplicates
 samtools sort -@24 deduped.bam -o deduped_srt.bam
 
 # variant-calling
-# freebayes, instalacja z menedżera programów ubuntu, wersja 1.3.6 (najowsza w github to 1.3.7 ale nie ma pliku wykonywalnego a kompilacja skomplikowana)
+# freebayes, instalacja z menedżera programów ubuntu, wersja 1.3.6
+# W wersji 24.04 lubuntu nie da się przez menedżera -> sciągnąć freebayes-1.3.6-linux-amd64-static.gz  z
+https://github.com/freebayes/freebayes/releases
+# i wystarczy rozpakować
 
 https://github.com/freebayes/freebayes
 
