@@ -232,8 +232,9 @@ done
 # W wersji 24.04 lubuntu -> sciągnąć freebayes-1.3.6-linux-amd64-static.gz  z
 https://github.com/freebayes/freebayes/releases
 # i wystarczy rozpakować
-# alias do programu w .bashrc
-alias freebayes='/home/mj/bin/freebayes-1.3.6-linux-amd64-static'
+# w skrypcie 'freebayes-parallel' zamienić 'freebayes' na całą ścieżkę do freebayes
+'/home/mj/bin/freebayes-1.3.6-linux-amd64-static'
+plik wykonywalny pobrany z git freebayes
 
 # Do free-bayes-parallel potrzebne vcflib - instalacja
 apt-get install libvcflib-tools libvcflib-dev
