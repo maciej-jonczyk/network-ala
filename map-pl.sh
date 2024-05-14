@@ -228,6 +228,21 @@ do
 done
 #*************************************************************************************************************
 
+# variant-calling
+# W wersji 24.04 lubuntu -> sciągnąć freebayes-1.3.6-linux-amd64-static.gz  z
+https://github.com/freebayes/freebayes/releases
+# i wystarczy rozpakować
+
+# Do free-bayes-parallel potrzebne vcflib - instalacja
+apt-get install libvcflib-tools libvcflib-dev
+# z
+https://github.com/vcflib/vcflib
+
+# Potrzebne też GNUparallel
+https://www.gnu.org/software/parallel/
+# instalacja z repozytorium
+sudo apt-get install parallel
+
 # freebayes, jeden procesor i bez filtrowania
 # poziom /media/mj/17d60f37-45c8-4878-8d94-7e95ff7bbddb/map-pl/sort4varcall
 freebayes -f /media/mj/c8e2ccd2-6313-4092-be34-46144891720f/NAMv5/Zm-B73-REFERENCE-NAM-5.0.fa srt-afex11-dedup.bam srt-afex13-dedup.bam srt-afex1-dedup.bam srt-afex2-dedup.bam \ 
@@ -236,7 +251,9 @@ srt-afex3-dedup.bam srt-afex5-dedup.bam srt-afex6-dedup.bam srt-afex9-dedup.bam 
 
 # freebayes multicore
 # ściągnięcie programów do katalogu ~/bin/freebayes-scripts
-# stąd -> https://github.com/freebayes/freebayes/tree/master/scripts
+# stąd
+https://github.com/freebayes/freebayes/tree/master/scripts
+
 bgziptabix              fasta_generate_regions.py  generate_freebayes_region_scripts.sh  sam_add_rg.pl                 update_version.sh
 coverage_to_regions.py  freebayes-parallel         GenerateFreebayesRegions.R            split_ref_by_bai_datasize.py  vcffirstheader
 
