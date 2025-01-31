@@ -48,3 +48,6 @@ To avoid arbitraly choices during matching NAMs to V4 and UPs and selecting best
 *average-UPs.r* - R script for expression averaging (averaging for different NAMs mapped to one UP)
 
 - [ ] construction of STRING network for all mapped probes
+
+#### Side project -gibberellin network
+*ga-network25.sh* - network from RT-qPCR results
