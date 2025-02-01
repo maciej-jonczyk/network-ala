@@ -6,7 +6,7 @@
 
 # ala-ga25 level
 # Select subnetwork form full network
-grep -f x4wyborid ../siec-ala-string/mapped/net-full > x
+grep -f ga-lista-v5 ../siec-ala-string/mapped/net-full > x
 # Save header
 head -n1 ../siec-ala-string/mapped/net-full > x2
 # Concatenate
@@ -19,7 +19,7 @@ cat x2 x > net-ga
 # GRMZM2G006964 has results from three pairs of primers - congruent changes so mean is used
 # Saved in ga4network-dot-manual.ods file
 # Export to csv file and change empty values to zeroes
-sed 's/\t\t/\t0\t/g;s/\t$/\t0/g' ga4network-dot-manual.csv > x
+sed 's/\t\t/\t0\t/g;s/\t\t/\t0\t/g;s/\t$/\t0/g' ga4network-dot-manual.csv > x
 # Add heade - important as it identify maize lines
 head -1 zest_gib_uzup.csv > xhead
 # Concatenating
